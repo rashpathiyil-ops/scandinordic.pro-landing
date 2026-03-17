@@ -712,12 +712,307 @@ footer {
 </footer>
 
 <script>
-// Scroll reveal
+// ── Translations ─────────────────────────────────────────────────────────────
+const translations = {
+  en: {
+    nav_features: 'Features', nav_pricing: 'Pricing', nav_about: 'About', nav_cta: 'Start Free',
+    hero_eyebrow: 'Business Finance Software',
+    hero_h1: 'The <em>Smarter</em> Way to<br>Run Your Business',
+    hero_sub: 'Invoicing, payroll, VAT reporting and financial dashboards — beautifully unified for small businesses across the Nordic region.',
+    hero_btn1: 'Start Free Today', hero_btn2: 'See Features',
+    stat1: '€0', stat1l: 'to start', stat2: '5 min', stat2l: 'setup time', stat3: '4', stat3l: 'languages', stat4: '100%', stat4l: 'web-based',
+    feat_eyebrow: "What's included", feat_h2: 'Everything your business<br><em>actually needs</em>',
+    feat_desc: 'Built specifically for small businesses — no bloat, no complexity. Just the tools that matter.',
+    f1t: 'Financial Dashboard', f1d: 'Real-time overview of your net profit, income, expenses and VAT. Filter by month, year or all time.',
+    f2t: 'Invoice Automation', f2d: 'Generate professional invoices in seconds. Auto-fill from time sessions, track payment status, send reminders.',
+    f3t: 'VAT & Tax Reporting', f3d: 'Automatic VAT calculations on every transaction. Quarterly summaries ready to submit to your tax authority.',
+    f4t: 'Worker & Payroll', f4d: 'Track worker hours, calculate wages automatically, generate PDF payslips and mark payments with one tap.',
+    f5t: 'AI Financial Assistant', f5d: 'Ask questions about your finances in plain language. Get insights, summaries and suggestions powered by AI.',
+    f6t: '15+ Integrations', f6d: 'Connect your existing tools — accounting software, payment processors, CRMs and more.',
+    prev_eyebrow: 'Live preview', prev_h2: 'Your dashboard,<br><em>beautifully clear</em>',
+    price_eyebrow: 'Simple pricing', price_h2: 'Start free.<br><em>Scale when ready.</em>',
+    price_desc: 'No credit card required to get started. Upgrade when your business grows.',
+    plan1: 'Free', plan2: 'Pro', plan3: 'Business',
+    p1f: ['Up to 10 transactions','2 invoices per month','Basic dashboard'],
+    p1o: ['AI Assistant','VAT Reports','Payroll','Integrations'],
+    p2f: ['Unlimited transactions','20 invoices per month','Full dashboard + charts','AI Financial Assistant','VAT & Tax Reports','Payroll management','All integrations'],
+    p3f: ['Everything in Pro','Unlimited invoices','Up to 10 team members','Priority support','Custom integrations','Advanced reports','White-label options'],
+    btn_free: 'Get Started', btn_pro: 'Start Pro Trial', btn_biz: 'Contact Sales',
+    test_eyebrow: 'Trusted by businesses', test_h2: 'What our customers<br><em>say about us</em>',
+    t1q: '"Finally a finance tool that doesn\'t feel like accounting software from 2005. Beautiful, fast and everything just works."',
+    t1n: 'Aksel Karlsson', t1r: 'Freelance Contractor, Stockholm',
+    t2q: '"The payroll feature alone saves me 3 hours every month. My workers get their payslips automatically. Incredible."',
+    t2n: 'Maja Holmgren', t2r: 'Small Business Owner, Helsinki',
+    t3q: '"VAT reporting used to take me half a day. Now it\'s done in minutes. ScandiNordic Pro is simply brilliant."',
+    t3n: 'Erik Lindström', t3r: 'Construction Company, Oslo',
+    cta_h2: 'Ready to take control of<br>your <em>business finances?</em>',
+    cta_p: 'Join small businesses across the Nordic region who trust ScandiNordic Pro to manage their money. Start free, no credit card needed.',
+    cta_btn: 'Start Free Today →', cta_note: 'Free plan available · No credit card required · Setup in 5 minutes',
+    footer_links: ['Features','Pricing','Privacy Policy','Terms of Service','Contact'],
+    footer_copy: '© 2026 ScandiNordic Pro. All rights reserved.'
+  },
+  fi: {
+    nav_features: 'Ominaisuudet', nav_pricing: 'Hinnoittelu', nav_about: 'Tietoa', nav_cta: 'Aloita ilmaiseksi',
+    hero_eyebrow: 'Yritystalouden ohjelmisto',
+    hero_h1: '<em>Älykkäämpi</em> tapa<br>johtaa yritystäsi',
+    hero_sub: 'Laskutus, palkanlaskenta, ALV-raportointi ja talousdashboard — kauniisti yhdistetty pienyrityksille koko Pohjoismaissa.',
+    hero_btn1: 'Aloita ilmaiseksi', hero_btn2: 'Katso ominaisuudet',
+    stat1: '€0', stat1l: 'aloittamiseen', stat2: '5 min', stat2l: 'käyttöönotto', stat3: '4', stat3l: 'kieltä', stat4: '100%', stat4l: 'verkkopohjainen',
+    feat_eyebrow: 'Mitä sisältyy', feat_h2: 'Kaikki mitä yrityksesi<br><em>todella tarvitsee</em>',
+    feat_desc: 'Rakennettu erityisesti pienyrityksille — ei turhaa monimutkaisuutta. Vain tärkeimmät työkalut.',
+    f1t: 'Talousdashboard', f1d: 'Reaaliaikainen yleiskatsaus nettotuotosta, tuloista, kuluista ja ALV:sta. Suodata kuukauden, vuoden tai kaiken ajan mukaan.',
+    f2t: 'Laskuautomaatio', f2d: 'Luo ammattimaisia laskuja sekunneissa. Täytä automaattisesti aikasessioista, seuraa maksustatus, lähetä muistutuksia.',
+    f3t: 'ALV & Veroilmoitus', f3d: 'Automaattiset ALV-laskelmat jokaisesta tapahtumasta. Neljännesvuosittaiset yhteenvedot valmiina veroviranomaiselle.',
+    f4t: 'Työntekijät & Palkkahallinto', f4d: 'Seuraa työntekijöiden tunteja, laske palkat automaattisesti, luo PDF-palkkakuitit yhdellä napautuksella.',
+    f5t: 'AI-talousassistentti', f5d: 'Kysy taloudestasi arkikielellä. Saat oivalluksia, yhteenvetoja ja ehdotuksia tekoälyn avulla.',
+    f6t: '15+ integraatiota', f6d: 'Yhdistä olemassa olevat työkalusi — kirjanpito-ohjelmistot, maksunkäsittelijät, CRM:t ja paljon muuta.',
+    prev_eyebrow: 'Live-esikatselu', prev_h2: 'Dashboardisi,<br><em>kauniisti selkeä</em>',
+    price_eyebrow: 'Yksinkertainen hinnoittelu', price_h2: 'Aloita ilmaiseksi.<br><em>Skaalaa kun olet valmis.</em>',
+    price_desc: 'Ei luottokorttia tarvita aloittamiseen. Päivitä kun yrityksesi kasvaa.',
+    plan1: 'Ilmainen', plan2: 'Pro', plan3: 'Yritys',
+    p1f: ['Enintään 10 tapahtumaa','2 laskua kuukaudessa','Perusdashboard'],
+    p1o: ['AI-assistentti','ALV-raportit','Palkkahallinto','Integraatiot'],
+    p2f: ['Rajattomat tapahtumat','20 laskua kuukaudessa','Täysi dashboard + kaaviot','AI-talousassistentti','ALV & Veroraportit','Palkkahallinto','Kaikki integraatiot'],
+    p3f: ['Kaikki Pro-ominaisuudet','Rajattomat laskut','Jopa 10 tiimin jäsentä','Prioriteettituki','Mukautetut integraatiot','Edistyneet raportit','White-label-vaihtoehdot'],
+    btn_free: 'Aloita nyt', btn_pro: 'Aloita Pro-kokeilu', btn_biz: 'Ota yhteyttä',
+    test_eyebrow: 'Yritysten luottama', test_h2: 'Mitä asiakkaamme<br><em>sanovat meistä</em>',
+    t1q: '"Vihdoin taloustyökalu, joka ei tunnu vuoden 2005 kirjanpito-ohjelmistolta. Kaunis, nopea ja kaikki toimii."',
+    t1n: 'Aksel Karlsson', t1r: 'Freelancer-urakoitsija, Tukholma',
+    t2q: '"Pelkkä palkkahallinto-ominaisuus säästää minulta 3 tuntia kuukaudessa. Työntekijäni saavat palkkakuittinsa automaattisesti."',
+    t2n: 'Maja Holmgren', t2r: 'Pienyrittäjä, Helsinki',
+    t3q: '"ALV-raportointi vei ennen puoli päivää. Nyt se on valmis minuuteissa. ScandiNordic Pro on yksinkertaisesti loistava."',
+    t3n: 'Erik Lindström', t3r: 'Rakennusyritys, Oslo',
+    cta_h2: 'Valmis ottamaan hallinnan<br><em>yritystaloudestasi?</em>',
+    cta_p: 'Liity pienyritysten joukkoon ympäri Pohjoismaita, jotka luottavat ScandiNordic Prohon rahojensa hallinnassa. Aloita ilmaiseksi.',
+    cta_btn: 'Aloita ilmaiseksi →', cta_note: 'Ilmainen suunnitelma saatavilla · Ei luottokorttia · Käyttöönotto 5 minuutissa',
+    footer_links: ['Ominaisuudet','Hinnoittelu','Tietosuojakäytäntö','Käyttöehdot','Yhteystiedot'],
+    footer_copy: '© 2026 ScandiNordic Pro. Kaikki oikeudet pidätetään.'
+  },
+  sv: {
+    nav_features: 'Funktioner', nav_pricing: 'Priser', nav_about: 'Om oss', nav_cta: 'Börja gratis',
+    hero_eyebrow: 'Företagsfinans programvara',
+    hero_h1: 'Det <em>smartare</em> sättet att<br>driva ditt företag',
+    hero_sub: 'Fakturering, lönehantering, momsrapportering och finansiell dashboard — vackert förenat för småföretag i hela Norden.',
+    hero_btn1: 'Börja gratis idag', hero_btn2: 'Se funktioner',
+    stat1: '€0', stat1l: 'att börja', stat2: '5 min', stat2l: 'installation', stat3: '4', stat3l: 'språk', stat4: '100%', stat4l: 'webbaserad',
+    feat_eyebrow: 'Vad ingår', feat_h2: 'Allt ditt företag<br><em>faktiskt behöver</em>',
+    feat_desc: 'Byggt specifikt för småföretag — ingen komplexitet. Bara de verktyg som spelar roll.',
+    f1t: 'Finansiell Dashboard', f1d: 'Realtidsöversikt av nettovinst, inkomster, utgifter och moms. Filtrera per månad, år eller alltid.',
+    f2t: 'Fakturaautomation', f2d: 'Generera professionella fakturor på sekunder. Autofyll från tidssessioner, spåra betalningsstatus.',
+    f3t: 'Moms & Skatterapportering', f3d: 'Automatiska momsberäkningar på varje transaktion. Kvartalssammanfattningar redo att skicka till skattemyndigheten.',
+    f4t: 'Personal & Lönehantering', f4d: 'Spåra arbetstimmar, beräkna löner automatiskt, generera PDF-lönespecifikationer.',
+    f5t: 'AI Finansassistent', f5d: 'Ställ frågor om din ekonomi på vanligt språk. Få insikter och förslag med AI.',
+    f6t: '15+ Integrationer', f6d: 'Anslut dina befintliga verktyg — bokföringsprogram, betalningsprocessorer, CRM och mer.',
+    prev_eyebrow: 'Live förhandsgranskning', prev_h2: 'Din dashboard,<br><em>vackert tydlig</em>',
+    price_eyebrow: 'Enkel prissättning', price_h2: 'Börja gratis.<br><em>Skala när du är redo.</em>',
+    price_desc: 'Inget kreditkort krävs för att komma igång. Uppgradera när ditt företag växer.',
+    plan1: 'Gratis', plan2: 'Pro', plan3: 'Företag',
+    p1f: ['Upp till 10 transaktioner','2 fakturor per månad','Grundläggande dashboard'],
+    p1o: ['AI-assistent','Momsrapporter','Lönehantering','Integrationer'],
+    p2f: ['Obegränsade transaktioner','20 fakturor per månad','Full dashboard + diagram','AI Finansassistent','Moms & Skatterapporter','Lönehantering','Alla integrationer'],
+    p3f: ['Allt i Pro','Obegränsade fakturor','Upp till 10 teammedlemmar','Prioritetssupport','Anpassade integrationer','Avancerade rapporter','White-label alternativ'],
+    btn_free: 'Kom igång', btn_pro: 'Starta Pro-provperiod', btn_biz: 'Kontakta oss',
+    test_eyebrow: 'Betrodd av företag', test_h2: 'Vad våra kunder<br><em>säger om oss</em>',
+    t1q: '"Äntligen ett finansverktyg som inte känns som bokföringsprogram från 2005. Vackert, snabbt och allt fungerar."',
+    t1n: 'Aksel Karlsson', t1r: 'Frilansare, Stockholm',
+    t2q: '"Lönehanteringsfunktionen sparar mig 3 timmar varje månad. Mina anställda får sina lönespecifikationer automatiskt."',
+    t2n: 'Maja Holmgren', t2r: 'Småföretagare, Helsingfors',
+    t3q: '"Momsrapportering brukade ta en halv dag. Nu är det klart på minuter. ScandiNordic Pro är helt enkelt briljant."',
+    t3n: 'Erik Lindström', t3r: 'Byggföretag, Oslo',
+    cta_h2: 'Redo att ta kontroll över<br>din <em>företagsekonomi?</em>',
+    cta_p: 'Gå med småföretag runt om i Norden som litar på ScandiNordic Pro för att hantera sin ekonomi. Börja gratis.',
+    cta_btn: 'Börja gratis idag →', cta_note: 'Gratisplan tillgänglig · Inget kreditkort krävs · Installation på 5 minuter',
+    footer_links: ['Funktioner','Priser','Integritetspolicy','Användarvillkor','Kontakt'],
+    footer_copy: '© 2026 ScandiNordic Pro. Alla rättigheter förbehållna.'
+  },
+  da: {
+    nav_features: 'Funktioner', nav_pricing: 'Priser', nav_about: 'Om os', nav_cta: 'Start gratis',
+    hero_eyebrow: 'Virksomhedsøkonomi software',
+    hero_h1: 'Den <em>smartere</em> måde at<br>drive din virksomhed på',
+    hero_sub: 'Fakturering, lønadministration, momsrapportering og finansielt dashboard — smukt forenet for små virksomheder i hele Norden.',
+    hero_btn1: 'Start gratis i dag', hero_btn2: 'Se funktioner',
+    stat1: '€0', stat1l: 'at komme i gang', stat2: '5 min', stat2l: 'opsætningstid', stat3: '4', stat3l: 'sprog', stat4: '100%', stat4l: 'webbaseret',
+    feat_eyebrow: 'Hvad er inkluderet', feat_h2: 'Alt hvad din virksomhed<br><em>faktisk har brug for</em>',
+    feat_desc: 'Bygget specifikt til små virksomheder — ingen kompleksitet. Kun de værktøjer der betyder noget.',
+    f1t: 'Finansielt Dashboard', f1d: 'Realtidsoversigt over nettofortjeneste, indkomst, udgifter og moms. Filtrer efter måned, år eller altid.',
+    f2t: 'Fakturaautomation', f2d: 'Generer professionelle fakturaer på sekunder. Autoudfyld fra tidssessioner, spor betalingsstatus.',
+    f3t: 'Moms & Skatterapportering', f3d: 'Automatiske momsberegninger på hver transaktion. Kvartalsoversigter klar til at indsende til skattemyndighederne.',
+    f4t: 'Medarbejdere & Løn', f4d: 'Spor arbejdstimer, beregn lønninger automatisk, generer PDF-lønsedler med ét tryk.',
+    f5t: 'AI Finansassistent', f5d: 'Stil spørgsmål om din økonomi på hverdagssprog. Få indsigt og forslag drevet af AI.',
+    f6t: '15+ Integrationer', f6d: 'Forbind dine eksisterende værktøjer — regnskabssoftware, betalingsprocessorer, CRM\'er og mere.',
+    prev_eyebrow: 'Live forhåndsvisning', prev_h2: 'Dit dashboard,<br><em>smukt klart</em>',
+    price_eyebrow: 'Enkel prissætning', price_h2: 'Start gratis.<br><em>Skaler når du er klar.</em>',
+    price_desc: 'Intet kreditkort kræves for at komme i gang. Opgrader når din virksomhed vokser.',
+    plan1: 'Gratis', plan2: 'Pro', plan3: 'Virksomhed',
+    p1f: ['Op til 10 transaktioner','2 fakturaer per måned','Grundlæggende dashboard'],
+    p1o: ['AI-assistent','Momsrapporter','Lønadministration','Integrationer'],
+    p2f: ['Ubegrænsede transaktioner','20 fakturaer per måned','Fuldt dashboard + diagrammer','AI Finansassistent','Moms & Skatterapporter','Lønadministration','Alle integrationer'],
+    p3f: ['Alt i Pro','Ubegrænsede fakturaer','Op til 10 teammedlemmer','Prioritetssupport','Tilpassede integrationer','Avancerede rapporter','White-label muligheder'],
+    btn_free: 'Kom i gang', btn_pro: 'Start Pro-prøveperiode', btn_biz: 'Kontakt os',
+    test_eyebrow: 'Betroet af virksomheder', test_h2: 'Hvad vores kunder<br><em>siger om os</em>',
+    t1q: '"Endelig et finansværktøj der ikke føles som regnskabssoftware fra 2005. Smukt, hurtigt og alt virker."',
+    t1n: 'Aksel Karlsson', t1r: 'Freelance entreprenør, Stockholm',
+    t2q: '"Lønadministrationsfunktionen alene sparer mig 3 timer hver måned. Mine medarbejdere får deres lønsedler automatisk."',
+    t2n: 'Maja Holmgren', t2r: 'Småvirksomhedsejer, Helsinki',
+    t3q: '"Momsrapportering plejede at tage en halv dag. Nu er det gjort på minutter. ScandiNordic Pro er simpelthen briljant."',
+    t3n: 'Erik Lindström', t3r: 'Byggefirma, Oslo',
+    cta_h2: 'Klar til at tage kontrol over<br>din <em>virksomhedsøkonomi?</em>',
+    cta_p: 'Tilslut dig små virksomheder over hele Norden som stoler på ScandiNordic Pro til at administrere deres penge. Start gratis.',
+    cta_btn: 'Start gratis i dag →', cta_note: 'Gratisplan tilgængelig · Intet kreditkort kræves · Opsætning på 5 minutter',
+    footer_links: ['Funktioner','Priser','Privatlivspolitik','Servicevilkår','Kontakt'],
+    footer_copy: '© 2026 ScandiNordic Pro. Alle rettigheder forbeholdes.'
+  }
+};
+
+// ── Language switcher UI ──────────────────────────────────────────────────────
+const langFlags = { en: '🇬🇧', fi: '🇫🇮', sv: '🇸🇪', da: '🇩🇰' };
+const langNames = { en: 'EN', fi: 'FI', sv: 'SV', da: 'DA' };
+
+function createLangSwitcher() {
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;gap:4px;align-items:center;';
+  Object.keys(langFlags).forEach(lang => {
+    const btn = document.createElement('button');
+    btn.id = `lang-${lang}`;
+    btn.innerHTML = `${langFlags[lang]} ${langNames[lang]}`;
+    btn.style.cssText = `background:transparent;border:1px solid rgba(200,146,58,0.2);color:#6b5e4e;padding:4px 8px;border-radius:5px;font-size:10px;cursor:pointer;font-family:inherit;font-weight:500;letter-spacing:0.05em;transition:all 0.2s;`;
+    btn.onclick = () => setLang(lang);
+    wrap.appendChild(btn);
+  });
+  return wrap;
+}
+
+// Insert switcher into nav
+const navLinks = document.querySelector('.nav-links');
+if (navLinks) navLinks.insertBefore(createLangSwitcher(), navLinks.firstChild);
+
+// ── Apply translations ────────────────────────────────────────────────────────
+function setLang(lang) {
+  const t = translations[lang];
+  if (!t) return;
+
+  // Store preference
+  localStorage.setItem('snp_lang', lang);
+
+  // Update active button styles
+  Object.keys(langFlags).forEach(l => {
+    const btn = document.getElementById(`lang-${l}`);
+    if (!btn) return;
+    btn.style.color = l === lang ? '#c8923a' : '#6b5e4e';
+    btn.style.borderColor = l === lang ? 'rgba(200,146,58,0.5)' : 'rgba(200,146,58,0.2)';
+    btn.style.background = l === lang ? 'rgba(200,146,58,0.1)' : 'transparent';
+  });
+
+  // Nav
+  const q = s => document.querySelector(s);
+  const qa = s => document.querySelectorAll(s);
+
+  try {
+    q('.nav-links a:nth-child(2)').textContent = t.nav_features;
+    q('.nav-links a:nth-child(3)').textContent = t.nav_pricing;
+    q('.nav-links a:nth-child(4)').textContent = t.nav_about;
+    q('.nav-cta').textContent = t.nav_cta;
+
+    // Hero
+    q('.hero-eyebrow').innerHTML = `<span class="eyebrow-line"></span>${t.hero_eyebrow}<span class="eyebrow-line"></span>`;
+    q('.hero h1').innerHTML = t.hero_h1;
+    q('.hero-sub').textContent = t.hero_sub;
+    const heroBtns = qa('.hero-actions a');
+    if (heroBtns[0]) heroBtns[0].textContent = t.hero_btn1;
+    if (heroBtns[1]) heroBtns[1].textContent = t.hero_btn2;
+
+    // Stats
+    const stats = qa('.stat-num');
+    const statLabels = qa('.stat-label');
+    const sData = [[t.stat1,t.stat1l],[t.stat2,t.stat2l],[t.stat3,t.stat3l],[t.stat4,t.stat4l]];
+    sData.forEach(([num,lbl],i) => { if(stats[i]) stats[i].textContent = num; if(statLabels[i]) statLabels[i].textContent = lbl; });
+
+    // Features section
+    const featSections = qa('.features .section-eyebrow, .features .section-title, .features .section-desc');
+    q('.features .section-eyebrow').innerHTML = `<span class="eyebrow-line"></span>${t.feat_eyebrow}`;
+    q('.features .section-title').innerHTML = t.feat_h2;
+    q('.features .section-desc').textContent = t.feat_desc;
+
+    const fCards = qa('.feature-card');
+    const fData = [[t.f1t,t.f1d],[t.f2t,t.f2d],[t.f3t,t.f3d],[t.f4t,t.f4d],[t.f5t,t.f5d],[t.f6t,t.f6d]];
+    fCards.forEach((card, i) => {
+      if (!fData[i]) return;
+      const title = card.querySelector('.feature-title');
+      const desc = card.querySelector('.feature-desc');
+      if (title) title.textContent = fData[i][0];
+      if (desc) desc.textContent = fData[i][1];
+    });
+
+    // Preview
+    q('.preview-section .section-eyebrow').innerHTML = `<span class="eyebrow-line"></span>${t.prev_eyebrow}<span class="eyebrow-line"></span>`;
+    q('.preview-section .section-title').innerHTML = t.prev_h2;
+
+    // Pricing
+    q('.pricing .section-eyebrow').innerHTML = `<span class="eyebrow-line"></span>${t.price_eyebrow}`;
+    q('.pricing .section-title').innerHTML = t.price_h2;
+    q('.pricing .section-desc').textContent = t.price_desc;
+
+    const planNames = qa('.plan-name');
+    [t.plan1,t.plan2,t.plan3].forEach((n,i) => { if(planNames[i]) planNames[i].textContent = n; });
+
+    const planBtns = qa('.plan-btn');
+    if(planBtns[0]) planBtns[0].textContent = t.btn_free;
+    if(planBtns[1]) planBtns[1].textContent = t.btn_pro;
+    if(planBtns[2]) planBtns[2].textContent = t.btn_biz;
+
+    // Plan features
+    const planCards = qa('.plan-card');
+    if (planCards[0]) {
+      const lis = planCards[0].querySelectorAll('.plan-features li');
+      const allFeats = [...t.p1f.map(f=>({text:f,off:false})), ...t.p1o.map(f=>({text:f,off:true}))];
+      lis.forEach((li,i) => { if(allFeats[i]) { li.textContent = allFeats[i].text; li.className = allFeats[i].off ? 'off' : ''; } });
+    }
+    if (planCards[1]) {
+      const lis = planCards[1].querySelectorAll('.plan-features li');
+      t.p2f.forEach((f,i) => { if(lis[i]) { lis[i].textContent = f; lis[i].className = ''; } });
+    }
+    if (planCards[2]) {
+      const lis = planCards[2].querySelectorAll('.plan-features li');
+      t.p3f.forEach((f,i) => { if(lis[i]) { lis[i].textContent = f; lis[i].className = ''; } });
+    }
+
+    // Testimonials
+    q('.testimonials .section-eyebrow').innerHTML = `<span class="eyebrow-line"></span>${t.test_eyebrow}<span class="eyebrow-line"></span>`;
+    q('.testimonials .section-title').innerHTML = t.test_h2;
+    const tCards = qa('.testimonial-card');
+    [[t.t1q,t.t1n,t.t1r],[t.t2q,t.t2n,t.t2r],[t.t3q,t.t3n,t.t3r]].forEach(([q2,n,r],i) => {
+      if (!tCards[i]) return;
+      const qEl = tCards[i].querySelector('.t-quote');
+      const nEl = tCards[i].querySelector('.t-name');
+      const rEl = tCards[i].querySelector('.t-role');
+      if(qEl) qEl.textContent = q2;
+      if(nEl) nEl.textContent = n;
+      if(rEl) rEl.textContent = r;
+    });
+
+    // CTA
+    q('.cta-box h2').innerHTML = t.cta_h2;
+    q('.cta-box p').textContent = t.cta_p;
+    q('.cta-box .btn-primary').textContent = t.cta_btn;
+    q('.cta-note').textContent = t.cta_note;
+
+    // Footer
+    const fLinks = qa('.footer-links a');
+    t.footer_links.forEach((l,i) => { if(fLinks[i]) fLinks[i].textContent = l; });
+    q('.footer-copy').textContent = t.footer_copy;
+
+  } catch(e) { console.warn('Translation error:', e); }
+}
+
+// ── Scroll reveal ─────────────────────────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+const savedLang = localStorage.getItem('snp_lang') || 'en';
+setLang(savedLang);
 </script>
 </body>
 </html>
-
