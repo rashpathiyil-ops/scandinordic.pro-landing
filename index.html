@@ -431,6 +431,7 @@ footer {
 
 /* ── Mobile ── */
 @media (max-width: 640px) {
+  #mobile-lang-bar { display: flex !important; }
   nav { padding: 14px 20px; }
   .nav-links { display: none; }
   .preview-body { grid-template-columns: 1fr; }
@@ -453,6 +454,10 @@ footer {
     <a href="#" class="nav-cta">Start Free</a>
   </div>
 </nav>
+
+<!-- MOBILE LANG BAR -->
+<div id="mobile-lang-bar" style="display:none;background:#100e0a;border-bottom:1px solid rgba(200,146,58,0.14);padding:8px 20px;justify-content:center;gap:8px;">
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -882,9 +887,12 @@ function createLangSwitcher() {
   return wrap;
 }
 
-// Insert switcher into nav
+// Insert switcher into nav (desktop)
 const navLinks = document.querySelector('.nav-links');
 if (navLinks) navLinks.insertBefore(createLangSwitcher(), navLinks.firstChild);
+// Insert switcher into mobile bar
+const mobilebar = document.getElementById('mobile-lang-bar');
+if (mobilebar) mobilebar.appendChild(createLangSwitcher());
 
 // ── Apply translations ────────────────────────────────────────────────────────
 function setLang(lang) {
