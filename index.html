@@ -450,12 +450,13 @@ footer {
     <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>
     <a href="#about">About</a>
-    <a href="https://verdant-frangipane-b5dade.netlify.app" class="nav-cta">Start Free</a>
+    <a href="#" class="nav-cta">Start Free</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-glow"></div>
   <div class="hero-lines"></div>
   <div class="hero-eyebrow">
     <span class="eyebrow-line"></span>
@@ -465,7 +466,7 @@ footer {
   <h1>The <em>Smarter</em> Way to<br>Run Your Business</h1>
   <p class="hero-sub">Invoicing, payroll, VAT reporting and financial dashboards — beautifully unified for small businesses across the Nordic region.</p>
   <div class="hero-actions">
-    <a href="https://verdant-frangipane-b5dade.netlify.app" class="btn-primary">Start Free Today</a>
+    <a href="#" class="btn-primary">Start Free Today</a>
     <a href="#features" class="btn-ghost">See Features</a>
   </div>
   <div class="stats-bar">
@@ -689,9 +690,10 @@ footer {
 <!-- CTA -->
 <section class="cta-section">
   <div class="cta-box reveal">
+    <div class="cta-glow"></div>
     <h2>Ready to take control of<br>your <em>business finances?</em></h2>
     <p>Join small businesses across the Nordic region who trust ScandiNordic Pro to manage their money. Start free, no credit card needed.</p>
-    <a href="https://verdant-frangipane-b5dade.netlify.app" class="btn-primary" style="display:inline-block">
+    <a href="#" class="btn-primary" style="display:inline-block">Start Free Today →</a>
     <p class="cta-note">Free plan available · No credit card required · Setup in 5 minutes</p>
   </div>
 </section>
@@ -868,12 +870,12 @@ const langNames = { en: 'EN', fi: 'FI', sv: 'SV', da: 'DA' };
 
 function createLangSwitcher() {
   const wrap = document.createElement('div');
-  wrap.style.cssText = 'display:flex;gap:4px;align-items:center;';
+  wrap.style.cssText = 'display:flex;gap:4px;align-items:center;margin-right:8px;';
   Object.keys(langFlags).forEach(lang => {
     const btn = document.createElement('button');
     btn.id = `lang-${lang}`;
     btn.innerHTML = `${langFlags[lang]} ${langNames[lang]}`;
-    btn.style.cssText = `background:transparent;border:1px solid rgba(200,146,58,0.2);color:#6b5e4e;padding:4px 8px;border-radius:5px;font-size:10px;cursor:pointer;font-family:inherit;font-weight:500;letter-spacing:0.05em;transition:all 0.2s;`;
+    btn.setAttribute('style', 'all:unset;display:inline-flex;align-items:center;gap:3px;background:transparent!important;border:1px solid rgba(200,146,58,0.2)!important;color:#6b5e4e!important;padding:4px 8px!important;border-radius:5px!important;font-size:10px!important;cursor:pointer!important;font-family:inherit!important;font-weight:500!important;letter-spacing:0.05em!important;transition:all 0.2s!important;box-shadow:none!important;text-transform:none!important;width:auto!important;');
     btn.onclick = () => setLang(lang);
     wrap.appendChild(btn);
   });
@@ -896,9 +898,8 @@ function setLang(lang) {
   Object.keys(langFlags).forEach(l => {
     const btn = document.getElementById(`lang-${l}`);
     if (!btn) return;
-    btn.style.color = l === lang ? '#c8923a' : '#6b5e4e';
-    btn.style.borderColor = l === lang ? 'rgba(200,146,58,0.5)' : 'rgba(200,146,58,0.2)';
-    btn.style.background = l === lang ? 'rgba(200,146,58,0.1)' : 'transparent';
+    const isActive = l === lang;
+    btn.setAttribute('style', `all:unset;display:inline-flex;align-items:center;gap:3px;background:${isActive ? 'rgba(200,146,58,0.1)' : 'transparent'}!important;border:1px solid ${isActive ? 'rgba(200,146,58,0.5)' : 'rgba(200,146,58,0.2)'}!important;color:${isActive ? '#c8923a' : '#6b5e4e'}!important;padding:4px 8px!important;border-radius:5px!important;font-size:10px!important;cursor:pointer!important;font-family:inherit!important;font-weight:500!important;letter-spacing:0.05em!important;transition:all 0.2s!important;box-shadow:none!important;text-transform:none!important;width:auto!important;`);
   });
 
   // Nav
@@ -1008,9 +1009,37 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+// ── Dashboard preview currency ───────────────────────────────────────────────
+const previewCurrency = {
+  en: { income: '89 400 €', expense: '41 080 €', profit: '48 320 €', vat: '-2 645 €', label: 'NET PROFIT · ALL TIME', incLabel: 'Income', expLabel: 'Expenses' },
+  fi: { income: '89 400 €', expense: '41 080 €', profit: '48 320 €', vat: '-2 645 €', label: 'NETTOTUOTTO · KAIKKIAAN', incLabel: 'Tulot', expLabel: 'Kulut' },
+  sv: { income: '89 400 kr', expense: '41 080 kr', profit: '48 320 kr', vat: '-2 645 kr', label: 'NETTOVINST · ALLTID', incLabel: 'Inkomst', expLabel: 'Utgifter' },
+  da: { income: '89 400 kr', expense: '41 080 kr', profit: '48 320 kr', vat: '-2 645 kr', label: 'NETTOFORTJENESTE · ALTID', incLabel: 'Indkomst', expLabel: 'Udgifter' },
+};
+function updatePreviewCurrency(lang) {
+  const c = previewCurrency[lang] || previewCurrency.en;
+  try {
+    const pVal = document.querySelector('.p-value');
+    if (pVal) pVal.textContent = c.profit;
+    const pLabel = document.querySelector('.preview-hero-card .p-label');
+    if (pLabel) pLabel.textContent = c.label;
+    const badges = document.querySelectorAll('.p-badge');
+    if (badges[0]) badges[0].innerHTML = '<span class=p-dot></span>' + c.incLabel + ': ' + c.income;
+    if (badges[1]) badges[1].innerHTML = '<span class=p-dot></span>' + c.expLabel + ': ' + c.expense;
+    const miniVals = document.querySelectorAll('.p-mini-val');
+    if (miniVals[0]) { miniVals[0].textContent = c.income; miniVals[0].style.color = '#6ab88a'; }
+    if (miniVals[1]) { miniVals[1].textContent = c.expense; miniVals[1].style.color = '#e07060'; }
+    if (miniVals[3]) { miniVals[3].textContent = c.vat; miniVals[3].style.color = '#c8a84a'; }
+  } catch(e) { console.warn(e); }
+}
+// ── Init ────────────────────────────────────────────────────────────────────
 const savedLang = localStorage.getItem('snp_lang') || 'en';
 setLang(savedLang);
+updatePreviewCurrency(savedLang);
+document.querySelectorAll('[id^="lang-"]').forEach(btn => {
+  const lang = btn.id.replace('lang-', '');
+  btn.onclick = () => { setLang(lang); updatePreviewCurrency(lang); };
+});
 </script>
 </body>
 </html>
